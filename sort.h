@@ -43,6 +43,8 @@ std::string getFileExtension(std::string filename){
 }
 
 struct Song{
+	std::string& root;
+
 	std::string origin;
 
 	std::string name;
@@ -51,7 +53,10 @@ struct Song{
 	std::string artist;
 	std::string album;
 	std::string track;
+
 	std::string target;
+
+	Song(std::string& nroot);
 
 	bool isGood();
 
@@ -59,6 +64,8 @@ struct Song{
 
 	void move();
 };
+
+Song::Song(std::string& nroot) : root{ nroot }{}
 
 bool Song::isGood(){
 	return (artist != "" && album != "");
@@ -85,7 +92,7 @@ void Song::getInfo(){
 	if(tempTrack < 10) track = '0';
 	track += std::to_string(tempTrack);
 
-	target = "D:/Music/Music/Library/" + artist + '/';
+	target = root + "/Library/" + artist + '/';
 
 	fs::create_directory(target);
 
