@@ -6,4 +6,4 @@ Now, with the magic of std::filesystem and TagLib, I wrote this to rename and so
 
 Ignores files which are lacking "title", "artist", or "album" tags.
 
-Characters not appearing in the Latin-1 encoding (such as the infinity symbol) throw an error that is likely unresolvable without a significant refactoring. Such files should be edited/moved manually.
+Characters not appearing in the Latin-1 encoding (such as the infinity symbol) throw an error that is likely unresolvable without a significant refactor. Such files should be edited/moved manually.
