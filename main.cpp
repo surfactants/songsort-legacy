@@ -23,8 +23,13 @@
 #include "sort.h"
 #include <iostream>
 #include <vector>
+#include <chrono>
+
+using runClock = std::chrono::high_resolution_clock;
 
 int main(){
+	auto runStart = runClock::now();
+
 	std::string directory = "D:/Music/Music/";
 
 	directory = "D:/example/";
@@ -62,7 +67,16 @@ int main(){
 	}
 
 	std::cout << "\n\n" << index << " files found...\n";
-	std::cout << moveCount << " successfully moved" << std::endl;
+	std::cout << moveCount << " successfully moved.\n";
+
+	auto runEnd = runClock::now();
+
+	auto runElapsed = runEnd - runStart;
+
+	double runTime = std::chrono::duration<double>(runElapsed).count() / 60;
+
+	std::cout << std::fixed << std::showpoint << std::setprecision(2);
+	std::cout << "Completed in " << runTime << " minutes." << std::endl;
 	
     return 0;
 }
