@@ -68,7 +68,6 @@ void Song::getInfo(){
 	name = getFileName(origin);
 	extension = getFileExtension(name);
 	
-
 	TagLib_File* file = NULL;
 	TagLib_Tag* tag = NULL;
 
@@ -82,9 +81,11 @@ void Song::getInfo(){
 	title = sanitize(taglib_tag_title(tag));
 	artist = sanitize(taglib_tag_artist(tag));
 	album = sanitize(taglib_tag_album(tag));
-	track = std::to_string(taglib_tag_track(tag));
+	unsigned int tempTrack = taglib_tag_track(tag);
+	if(tempTrack < 10) track = '0';
+	track += std::to_string(tempTrack);
 
-	target = "D:/example/Library/" + artist + '/';
+	target = "D:/Music/Music/Library/" + artist + '/';
 
 	fs::create_directory(target);
 
