@@ -34,9 +34,8 @@ std::wstring sanitize(TagLib::String str){
 		|| str[i] == '"'
 		|| str[i] == '<'
 		|| str[i] == '>'
-		|| str[i] == '|'
-		|| str[i] == '∞'){
-			str[i] = '_';
+		|| str[i] == '|'){
+			str[i] = '-';
 		}
 	}
 
