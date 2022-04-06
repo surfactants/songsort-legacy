@@ -27,7 +27,7 @@
 int main(){
 	std::string directory = "D:/Music/Music/";
 
-	fs::create_directory("D:/Music/Music/Library/");
+	fs::create_directory(directory + "Library/");
 
 	unsigned int index = 0;
 	unsigned int moveCount = 0;
@@ -42,7 +42,7 @@ int main(){
 		if(!goodPath(path)) continue;
 		else std::cout << '\n' << ++index << ": ";
 
-		Song* song = new Song;
+		Song* song = new Song(directory);
 			song->origin = path;
 			song->getInfo();
 
