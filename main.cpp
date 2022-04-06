@@ -27,6 +27,8 @@
 int main(){
 	std::string directory = "D:/Music/Music/";
 
+	directory = "D:/example/";
+
 	fs::create_directory(directory + "Library/");
 
 	unsigned int index = 0;
@@ -48,11 +50,10 @@ int main(){
 
 		try{
 			if(song->isGood()){
-				std::cout << song->name << " is good, renaming...";
 				fs::rename(song->origin, song->target);
 				moveCount++;
 			}
-			else std::cout << song->name << " is bad :(";
+			else continue;
 		}
 		catch(const fs::filesystem_error& ex){
 			std::cout << "EXCEPTION: " << ex.what();
