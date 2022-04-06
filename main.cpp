@@ -22,7 +22,6 @@
 #include "stdafx.h"
 #include "sort.h"
 #include <iostream>
-#include <vector>
 #include <chrono>
 
 using runClock = std::chrono::high_resolution_clock;
@@ -35,8 +34,6 @@ int main(){
 	fs::create_directory(directory + "Library/");
 
 	unsigned int index = 0, moveCount = 0;
-
-	std::vector<std::string> toDelete;
 
 	for(const auto& entry : fs::directory_iterator(directory)){
 		std::string path = entry.path().string();
