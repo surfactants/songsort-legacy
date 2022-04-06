@@ -22,40 +22,41 @@
 #pragma once
 
 #include <algorithm>
+#include <taglib/tstring.h>
 
-std::string sanitize(std::string str){
+std::wstring sanitize(TagLib::String str){
 	for(unsigned int i = 0; i < str.size(); i++){
-		if(str.at(i) == '\\'
-		|| str.at(i) == '/'
-		|| str.at(i) == ':'
-		|| str.at(i) == '*'
-		|| str.at(i) == '?'
-		|| str.at(i) == '"'
-		|| str.at(i) == '<'
-		|| str.at(i) == '>'
-		|| str.at(i) == '|'){
-			str.at(i) = '_';
+		if(str[i] == '\\'
+		|| str[i] == '/'
+		|| str[i] == ':'
+		|| str[i] == '*'
+		|| str[i] == '?'
+		|| str[i] == '"'
+		|| str[i] == '<'
+		|| str[i] == '>'
+		|| str[i] == '|'
+		|| str[i] == '∞'){
+			str[i] = '_';
 		}
 	}
 
-	return str;
+	return str.toWString();
 }
 
 bool goodPath(std::string path){
-	bool good = true;
-
 	std::transform(path.begin(), path.end(), path.begin(), ::tolower);
 
-	if(path.find('.') == std::string::npos
+	return !(path.find('.') == std::string::npos
 	|| (path.find(".mp3") == std::string::npos
 	&& path.find(".m4a") == std::string::npos
 	&& path.find(".ogg") == std::string::npos
 	&& path.find(".flac") == std::string::npos
 	&& path.find(".wav") == std::string::npos
 	&& path.find(".aiff") == std::string::npos
-	&& path.find(".mp4") == std::string::npos)){
-		good = false;
-	}
+	&& path.find(".mp4") == std::string::npos));
+}
 
-	return good;
+std::wstring stow(std::string str){
+	static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	return converter.from_bytes(str);
 }
