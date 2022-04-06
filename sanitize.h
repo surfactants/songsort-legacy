@@ -48,6 +48,7 @@ bool goodPath(std::string path){
 
 	if(path.find('.') == std::string::npos
 	|| (path.find(".mp3") == std::string::npos
+	&& path.find(".m4a") == std::string::npos
 	&& path.find(".ogg") == std::string::npos
 	&& path.find(".flac") == std::string::npos
 	&& path.find(".wav") == std::string::npos
