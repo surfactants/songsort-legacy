@@ -65,7 +65,6 @@ bool Song::isGood(){
 }
 
 void Song::getInfo(){
-	//ID3_Tag tag(origin.c_str());
 	name = getFileName(origin);
 	extension = getFileExtension(name);
 	
@@ -85,7 +84,7 @@ void Song::getInfo(){
 	album = sanitize(taglib_tag_album(tag));
 	track = std::to_string(taglib_tag_track(tag));
 
-	target = "D:/Library/" + artist + '/';
+	target = "D:/example/Library/" + artist + '/';
 
 	fs::create_directory(target);
 
@@ -94,8 +93,12 @@ void Song::getInfo(){
 	fs::create_directory(target);
 
 	target += track + " " + title + extension;
+
+	taglib_tag_free_strings();
+	taglib_file_free(file);
 }
 
 void Song::move(){
 	fs::copy_file(origin, target);
+	fs::remove(origin);
 }
