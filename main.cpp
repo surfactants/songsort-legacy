@@ -33,13 +33,10 @@ int main(){
 	std::vector<std::string> toDelete;
 
 	for(const auto& entry : fs::directory_iterator(directory)){
-		std::cout << '\n' << ++index << ": ";
 		std::string path = entry.path().string();
 		
-		if(!goodPath(path)){
-			index--;
-			continue;
-		}
+		if(!goodPath(path)) continue;
+		else std::cout << '\n' << ++index << ": ";
 
 		Song* song = new Song;
 			song->origin = path;
