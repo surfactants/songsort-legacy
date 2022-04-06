@@ -22,18 +22,24 @@
 #include "stdafx.h"
 #include "sort.h"
 #include <iostream>
+#include <vector>
 
 int main(){
-	std::string directory = "D:/Music/Music/";
+	std::string directory = "D:/example/";
 
 	unsigned int index = 0;
 	unsigned int moveCount = 0;
+
+	std::vector<std::string> toDelete;
 
 	for(const auto& entry : fs::directory_iterator(directory)){
 		std::cout << '\n' << ++index << ": ";
 		std::string path = entry.path().string();
 		
-		if(!goodPath(path)) continue;
+		if(!goodPath(path)){
+			index--;
+			continue;
+		}
 
 		Song* song = new Song;
 			song->origin = path;
@@ -41,9 +47,11 @@ int main(){
 
 		try{
 			if(song->isGood()){
-				song->move();
+				std::cout << song->name << " is good, renaming...";
+				fs::rename(song->origin, song->target);
 				moveCount++;
 			}
+			else std::cout << song->name << " is bad :(";
 		}
 		catch(const fs::filesystem_error& ex){
 			std::cout << "EXCEPTION: " << ex.what();
@@ -52,8 +60,11 @@ int main(){
 		delete song;
 	}
 
-	std::cout << "\n\n" << index << "files found...\n";
-	std::cout << moveCount << " successfully moved\n";
+	std::cout << "\n\n" << index << " files found...\n";
+	std::cout << moveCount << " successfully moved" << std::endl;
+
+	std::cout << '\n' << std::endl;
+	system("PAUSE");
 	
     return 0;
 }
