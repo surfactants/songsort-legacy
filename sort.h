@@ -68,7 +68,7 @@ struct Song{
 Song::Song(std::string& nroot) : root{ nroot }{}
 
 bool Song::isGood(){
-	return (artist != "" && album != "");
+	return (title != "" && artist != "" && album != "");
 }
 
 void Song::getInfo(){
