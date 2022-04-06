@@ -32,14 +32,9 @@ int main(){
 
 	std::string directory = "D:/Music/Music/";
 
-	directory = "D:/example/";
-
 	fs::create_directory(directory + "Library/");
 
-	unsigned int index = 0;
-	unsigned int moveCount = 0;
-
-	taglib_set_strings_unicode(false);
+	unsigned int index = 0, moveCount = 0;
 
 	std::vector<std::string> toDelete;
 
@@ -47,7 +42,7 @@ int main(){
 		std::string path = entry.path().string();
 		
 		if(!goodPath(path)) continue;
-		else std::cout << '\n' << ++index << ": ";
+		else std::cout << ++index << ": ";
 
 		Song* song = new Song(directory);
 			song->origin = path;
@@ -64,9 +59,11 @@ int main(){
 		}
 
 		delete song;
+
+		std::cout << '\n';
 	}
 
-	std::cout << "\n\n" << index << " files found...\n";
+	std::cout << "\n\n     " << index << " files found...\n     ";
 	std::cout << moveCount << " successfully moved.\n";
 
 	auto runEnd = runClock::now();
@@ -76,7 +73,7 @@ int main(){
 	double runTime = std::chrono::duration<double>(runElapsed).count() / 60;
 
 	std::cout << std::fixed << std::showpoint << std::setprecision(2);
-	std::cout << "Completed in " << runTime << " minutes." << std::endl;
+	std::cout << "     Completed in " << runTime << " minutes.\n" << std::endl;
 	
     return 0;
 }
