@@ -25,10 +25,14 @@
 #include <vector>
 
 int main(){
-	std::string directory = "D:/example/";
+	std::string directory = "D:/Music/Music/";
+
+	fs::create_directory("D:/Music/Music/Library/");
 
 	unsigned int index = 0;
 	unsigned int moveCount = 0;
+
+	taglib_set_strings_unicode(false);
 
 	std::vector<std::string> toDelete;
 
@@ -59,9 +63,6 @@ int main(){
 
 	std::cout << "\n\n" << index << " files found...\n";
 	std::cout << moveCount << " successfully moved" << std::endl;
-
-	std::cout << '\n' << std::endl;
-	system("PAUSE");
 	
     return 0;
 }
