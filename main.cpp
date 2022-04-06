@@ -53,7 +53,6 @@ int main(){
 				fs::rename(song->origin, song->target);
 				moveCount++;
 			}
-			else continue;
 		}
 		catch(const fs::filesystem_error& ex){
 			std::cout << "EXCEPTION: " << ex.what();
