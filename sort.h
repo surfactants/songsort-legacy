@@ -26,19 +26,23 @@
 #include <stdio.h>
 #include <taglib/tag_c.h>
 
+#include <taglib/fileref.h>
+#include <taglib/tag.h>
+#include <taglib/tpropertymap.h>
+
 #include "sanitize.h"
 
 namespace fs = std::filesystem;
 
-std::string getFileName(std::string path){
+std::wstring getFileName(std::string path){
 	while(path.find('\\') != std::string::npos){
 		path = path.substr(path.find('\\') + 1);
 	}
 
-	return path;
+	return stow(path);
 }
 
-std::string getFileExtension(std::string filename){
+std::wstring getFileExtension(std::wstring filename){
 	return filename.substr(filename.find('.'));
 }
 
@@ -47,16 +51,16 @@ struct Song{
 
 	std::string origin;
 
-	std::string name;
-	std::string title;
-	std::string extension;
-	std::string artist;
-	std::string album;
-	std::string track;
+	std::wstring name;
+	std::wstring title;
+	std::wstring extension;
+	std::wstring artist;
+	std::wstring album;
+	std::wstring track;
 
-	std::string target;
+	std::wstring target;
 
-	Song(std::string& nroot);
+	Song(std::string& nroot) : root{ nroot }{}
 
 	bool isGood();
 
@@ -65,45 +69,33 @@ struct Song{
 	void move();
 };
 
-Song::Song(std::string& nroot) : root{ nroot }{}
-
 bool Song::isGood(){
-	return (title != "" && artist != "" && album != "");
+	return (!title.empty() && !artist.empty() && !album.empty());
 }
 
 void Song::getInfo(){
+	TagLib::FileRef f(origin.c_str());
+	TagLib::Tag* tag1 = f.tag();
+
 	name = getFileName(origin);
 	extension = getFileExtension(name);
-	
-	TagLib_File* file = NULL;
-	TagLib_Tag* tag = NULL;
 
-	const TagLib_AudioProperties* properties;
-
-	file = taglib_file_new(origin.c_str());
-
-	tag = taglib_file_tag(file);
-	properties = taglib_file_audioproperties(file);
-
-	title = sanitize(taglib_tag_title(tag));
-	artist = sanitize(taglib_tag_artist(tag));
-	album = sanitize(taglib_tag_album(tag));
-	unsigned int tempTrack = taglib_tag_track(tag);
+	title = sanitize(tag1->title());
+	artist = sanitize(tag1->artist());
+	album = sanitize(tag1->album());
+	unsigned int tempTrack = tag1->track();
 	if(tempTrack < 10) track = '0';
-	track += std::to_string(tempTrack);
+	track += std::to_wstring(tempTrack);
 
-	target = root + "/Library/" + artist + '/';
-
-	fs::create_directory(target);
-
-	target += album + "/";
+	target = stow(root) + stow("Library/") + artist + stow("/");
 
 	fs::create_directory(target);
 
-	target += track + " " + title + extension;
+	target += album + stow("/");
 
-	taglib_tag_free_strings();
-	taglib_file_free(file);
+	fs::create_directory(target);
+
+	target += track + stow(" ") + title + extension;
 }
 
 void Song::move(){
