@@ -34,24 +34,32 @@
 
 namespace fs = std::filesystem;
 
+////////////////////////////////////////////////////////////
+// \brief Finds file name from a path
+//
 std::wstring getFileName(std::string path){
-	while(path.find('\\') != std::string::npos){
-		path = path.substr(path.find('\\') + 1);
+	while(path.find('/') != std::string::npos){
+		path = path.substr(path.find('/') + 1);
 	}
 
 	return stow(path);
 }
 
+////////////////////////////////////////////////////////////
+// \brief Returns the file extension
+//
 std::wstring getFileExtension(std::wstring filename){
 	return filename.substr(filename.find('.'));
 }
 
+////////////////////////////////////////////////////////////
+// \brief Finds and holds metadata from a single song
+//
 struct Song{
 	std::string& root;
 
 	std::string origin;
 
-	std::wstring name;
 	std::wstring title;
 	std::wstring extension;
 	std::wstring artist;
@@ -59,46 +67,53 @@ struct Song{
 	std::wstring track;
 
 	std::wstring target;
-
+	
+	////////////////////////////////////////////////////////////
+	// \brief Default constructor
+	//
 	Song(std::string& nroot) : root{ nroot }{}
-
+	
+	////////////////////////////////////////////////////////////
+	// \brief Checks if file has the appropriate metadata for sorting
+	//
 	bool isGood();
-
+	
+	////////////////////////////////////////////////////////////
+	// \brief Reads the file's metadata
+	//
 	void getInfo();
-
-	void move();
 };
 
 bool Song::isGood(){
-	return (!title.empty() && !artist.empty() && !album.empty());
+	return !(title.empty() && artist.empty() && album.empty());
 }
 
 void Song::getInfo(){
+	//create taglib objects
 	TagLib::FileRef f(origin.c_str());
-	TagLib::Tag* tag1 = f.tag();
+	TagLib::Tag* tag = f.tag();
+	
+	//read metadata from tag objects
+	title = sanitize(tag->title());
+	artist = sanitize(tag->artist());
+	album = sanitize(tag->album());
+	
+	//checks track number and adds leading 0 if appropriate
+	unsigned int nTrack = tag->track();
+		if(nTrack != 0){
+		if(nTrack < 10) track = '0';
+		track += std::to_wstring(nTrack) + L" ";
+	}
 
-	name = getFileName(origin);
-	extension = getFileExtension(name);
+	//define and create target artist directory
+	target = stow(root) + L"Library/" + artist + L"/";
+		fs::create_directory(target);
 
-	title = sanitize(tag1->title());
-	artist = sanitize(tag1->artist());
-	album = sanitize(tag1->album());
-	unsigned int tempTrack = tag1->track();
-	if(tempTrack < 10) track = '0';
-	track += std::to_wstring(tempTrack);
+		//define and create target album directory
+	target += album + L"/";
+		fs::create_directory(target);
 
-	target = stow(root) + stow("Library/") + artist + stow("/");
-
-	fs::create_directory(target);
-
-	target += album + stow("/");
-
-	fs::create_directory(target);
-
-	target += track + stow(" ") + title + extension;
-}
-
-void Song::move(){
-	fs::copy_file(origin, target);
-	fs::remove(origin);
+	//define file target
+	extension = getFileExtension(getFileName(origin));
+		target += track + title + extension;
 }
