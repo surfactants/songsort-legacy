@@ -22,9 +22,7 @@
 #pragma once
 
 #include <filesystem>
-
 #include <stdio.h>
-#include <taglib/tag_c.h>
 
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
