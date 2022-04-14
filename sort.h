@@ -51,7 +51,7 @@ std::wstring getFileExtension(std::wstring filename){
 }
 
 ////////////////////////////////////////////////////////////
-// \brief Finds and holds metadata from a single song
+// \brief Extracts and holds metadata relating to a single audio file
 //
 struct Song{
 	std::string& root;
