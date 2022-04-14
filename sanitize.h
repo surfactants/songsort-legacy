@@ -25,7 +25,7 @@
 #include <taglib/tstring.h>
 
 ////////////////////////////////////////////////////////////
-// \brief Renders strings safe for windows filenames and returns as std::wstring
+// \brief Renders strings safe for Windows filenames and returns as std::wstring
 //
 std::wstring sanitize(TagLib::String str){
 	for(unsigned int i = 0; i < str.size(); i++){
@@ -46,7 +46,7 @@ std::wstring sanitize(TagLib::String str){
 }
 
 ////////////////////////////////////////////////////////////
-// \brief Checks if a filename refers to a valid audio file
+// \brief Does this path/filename refer to a valid audio file?
 //
 bool goodPath(std::string path){
 	std::transform(path.begin(), path.end(), path.begin(), ::tolower);
