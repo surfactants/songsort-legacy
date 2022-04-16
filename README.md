@@ -1,6 +1,8 @@
 # songsort
 
-A music file sorter, compiled with MSVC 14.16, using TagLib 1.12
+A music file sorter.
+
+Compiled with MSVC 14.16, using TagLib 1.12
 
 Years ago, I moved all of my music from my ipod to my desktop. Every file ended up in a single folder, with strings of random characters as filenames.
 
