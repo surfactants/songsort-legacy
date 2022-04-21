@@ -6,4 +6,6 @@ Years ago, I moved all of my music from my ipod to my desktop. Every file ended 
 
 Now, with the magic of std::filesystem and TagLib, I wrote this to rename and sort the files based on the metadata.
 
-Ignores files which are lacking "title", "artist", or "album" tags.
+Ignores files lacking "title", "artist", or "album" tags.
+
+Moves ~1k files per minute.
