@@ -8,4 +8,4 @@ Now, with the magic of std::filesystem and TagLib, I wrote this to rename and so
 
 Ignores files lacking "title", "artist", or "album" tags.
 
-Moves ~1k files per minute.
+Moves ~1k files per minute on my machine (i5-4460 @3.20GHz and 16.0GB RAM)
